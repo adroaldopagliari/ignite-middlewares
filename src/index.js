@@ -29,6 +29,8 @@ function checksCreateTodosUserAvailability(request, response, next) {
   if ((!user.pro && user.todos.length < 10) || user.pro) {
     return next();
   }
+
+  return response.status(403).json({ error: "Todo unavailable" });
 }
 
 function checksTodoExists(request, response, next) {
@@ -42,6 +44,9 @@ function checksTodoExists(request, response, next) {
       const todoFound = userFound.todos.find((todo) => todo.id === id);
 
       if (todoFound) {
+        request.user = userFound;
+        request.todo = todoFound;
+
         return next();
       }
     }
@@ -54,8 +59,12 @@ function findUserById(request, response, next) {
   const userFound = users.find((user) => user.id === id);
 
   if (userFound) {
+    request.user = userFound;
+
     return next();
   }
+
+  return response.status(404).json({ error: "User not found" });
 }
 
 app.post("/users", (request, response) => {
