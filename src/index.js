@@ -49,10 +49,12 @@ function checksTodoExists(request, response, next) {
 
         return next();
       }
+    } else {
+      return response.status(400).json({ error: "Invalid uuid" });
     }
   }
 
-  return response.status(404).json({ error: "User or todo not found" });
+  return response.status(404).json({ error: "User not found" });
 }
 
 function findUserById(request, response, next) {
