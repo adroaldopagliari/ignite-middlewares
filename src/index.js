@@ -51,6 +51,8 @@ function checksTodoExists(request, response, next) {
       }
     }
   }
+
+  return response.status(404).json({ error: "User or todo not found" });
 }
 
 function findUserById(request, response, next) {
